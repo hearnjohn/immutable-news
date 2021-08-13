@@ -4,14 +4,14 @@ import "./StoryStorage.sol";
 
 contract UserStorage is StoryStorage {
 
-    mapping (bytes32 => uint) usernames;
+    mapping (string => uint) usernames;
     mapping (address => uint) addresses;
     mapping (uint => User) ids;
-    mapping (uint => mapping(address => int[])) storyVotes;
+    mapping (uint => mapping(address => mapping(uint => int))) storyVotes;
 
     struct User {
         uint id;
-        bytes32 username;
+        string username;
         uint membershipStart;
     }
 
@@ -19,11 +19,11 @@ contract UserStorage is StoryStorage {
 
     // *** Need to agree on a timeframe for membership. Week? Month? ***
     modifier activeMembership() {
-        require(86400 - (block.timestamp - ids[addresses[msg.sender]].membershipStart) > 0);
+        require(2592000 - (block.timestamp - ids[addresses[msg.sender]].membershipStart) > 0);
         _;
     }
 
-    function createUser(bytes32 _username) public payable {
+    function createUser(string memory _username) public payable {
         require(usernames[_username] == 0);
         require(addresses[msg.sender] == 0);
         require(msg.value == 0.005 ether, "A 30-day membership costs 0.005 ether!");
@@ -42,7 +42,7 @@ contract UserStorage is StoryStorage {
     // Have the users cast their votes for the story here
     // We need to make sure that the web3 call keeps _vote from taking on a value other than 1 or -1
     function castVote(uint _storyId, int _vote) public activeMembership() {
-        require(storyVotes[day][msg.sender][_storyId] == 0);
+        require(storyVotes[day][msg.sender][_storyId] == 0 && _storyId < nextStoryId);
 
         stories[day][_storyId].netScore = (_vote == 1) ? stories[day][_storyId].netScore + 1 :
                                                          stories[day][_storyId].netScore - 1;
@@ -63,9 +63,11 @@ contract UserStorage is StoryStorage {
     }
 
     // The user will be responsible for claiming the payout once their story has been scored
+    // Can't claim reward for story until the day is over
     function payout(uint _day, uint _storyId) public payable {
-        require(ids[addresses[msg.sender]].username == stories[_day][_storyId].uploader);
+        require(keccak256(bytes(ids[addresses[msg.sender]].username)) == keccak256(bytes(stories[_day][_storyId].uploader)));
         if (stories[_day][_storyId].netScore > 0 && address(this).balance >= .015 ether) {
+            stories[_day][_storyId].netScore = -1;
             payable(msg.sender).transfer(.015 ether);
         }
     }
