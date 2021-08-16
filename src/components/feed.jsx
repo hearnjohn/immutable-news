@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
-
+import Post from './post';
+import { ModalProvider } from "react-simple-modal-provider";
+import Modal from './modal';
 class Feed extends Component {
     state = {
-        postTitles: ['title1', 'title2', 'title3']
+        posts: [{ id: 0, title: "post 1", content: "this is post 2", score: "100" }, { id: 1, title: "post 2", content: "this is post 2", score: "101" }, { id: 2, title: "post 3", content: "this is post 3", score: "102" }]
     }
     render() {
         return (
-            <div>
-                <h1> {this.getTitleString()} </h1>
-                <ul>
-                    {this.state.postTitles.map(post => <li key={post} onClick={() => this.expandPost(post)}>{post}</li>)}
-                </ul>
-            </div>);
+            <React.Fragment>
+
+                <div>
+                    <h1> {this.getTitleString()} </h1>
+                    <ul>
+                        {this.state.posts.map(post => <Post content={post}></Post>)}
+                    </ul>
+                </div>
+
+            </React.Fragment>
+        );
 
     }
     getTitleString() {
@@ -25,9 +32,7 @@ class Feed extends Component {
 
         return titleString;
     }
-    expandPost(title) {
-        console.log(title);
-    }
+
 }
 
 export default Feed;
