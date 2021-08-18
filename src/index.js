@@ -8,7 +8,7 @@ import Feed from './components/feed';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Feed />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

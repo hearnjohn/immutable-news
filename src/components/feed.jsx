@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Post from './post';
 import { ModalProvider } from "react-simple-modal-provider";
-import Modal from './modal';
+import ConsumePage from './ConsumePage';
+
 class Feed extends Component {
     state = {
         posts: [{ id: 0, title: "post 1", content: "this is post 2", score: "100" }, { id: 1, title: "post 2", content: "this is post 2", score: "101" }, { id: 2, title: "post 3", content: "this is post 3", score: "102" }]
@@ -17,7 +18,7 @@ class Feed extends Component {
                     </ul>
                 </div>
 
-            </React.Fragment>
+            </React.Fragment >
         );
 
     }
