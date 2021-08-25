@@ -1,6 +1,6 @@
 import Modal, { useModalState } from "react-simple-modal-provider";
 
-export default ({ children }) => {
+export default ({ children, title, body, score }) => {
     const [isOpen, setOpen] = useModalState();
 
     return (
@@ -10,7 +10,7 @@ export default ({ children }) => {
             isOpen={isOpen}
             setOpen={setOpen}
         >
-            <span>😆</span>
+            {<span>😆</span>}
         </Modal>
     );
 };

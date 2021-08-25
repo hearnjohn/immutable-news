@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import ConsumePage from './ConsumePage';
+
+
 class Post extends Component {
     state = { id: this.props.content.id, title: this.props.content.title, content: this.props.content.content, score: this.props.content.score }
     render() {
@@ -6,8 +9,9 @@ class Post extends Component {
         return (<li key={this.state.content.id} onClick={() => this.expandPost()}>
             <span>
                 <button onClick={() => this.changeScore(true)}>+</button>
-                {this.state.title + " " + this.state.score}
+                <ConsumePage postTitle={this.state.title + " " + this.state.score} />
                 <button onClick={() => this.changeScore(false)}>-</button>
+
             </span>
         </li>);
     }

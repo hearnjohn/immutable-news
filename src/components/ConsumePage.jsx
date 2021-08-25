@@ -1,7 +1,6 @@
 import { useModal } from "react-simple-modal-provider";
 
-export default () => {
-    const { open: openModal } = useModal("BasicModal");
-
-    return <button onClick={openModal}>Open</button>;
+export default ({ postTitle }) => {
+    const { open } = useModal("BasicModal");
+    return <button onClick={() => open({ title: "Hello World", body: "some body text", score: 69 })}> {postTitle} </button >;
 };
